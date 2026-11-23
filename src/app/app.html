@@ -27,7 +27,16 @@
             <div class="avatar">{{ iniciales(c.nombre) }}</div>
             <div class="flex-grow-1">
               <h2 class="h5 mb-1">{{ c.nombre }}</h2>
-              <span class="badge text-bg-secondary">{{ c.grupo }}</span>
+              <select
+                #selGrupo
+                aria-label="Grupo"
+                [class]="'badge border-0 ' + colorGrupo(c.grupo)"
+                [value]="c.grupo"
+                (change)="cambiarGrupo(c.id, selGrupo.value)">
+                <option value="Clase" class="bg-white text-dark">Clase</option>
+                <option value="Familia" class="bg-white text-dark">Familia</option>
+                <option value="Trabajo" class="bg-white text-dark">Trabajo</option>
+              </select>
               <p class="mb-0 mt-2">{{ c.telefono }}</p>
               <a class="small" [href]="'mailto:' + c.email">{{ c.email }}</a>
             </div>

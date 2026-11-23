@@ -43,14 +43,26 @@ export class App {
     );
   }
 
+  cambiarGrupo(id: number, nuevoGrupo: string) {
+    this.contactos.update(lista =>
+      lista.map(c => c.id === id ? { ...c, grupo: nuevoGrupo } : c)
+    );
+  }
+
+  colorGrupo(grupo: string): string {
+    if (grupo === 'Clase') return 'text-bg-primary';
+    if (grupo === 'Familia') return 'text-bg-warning';
+    return 'text-bg-secondary';
+  }
+
   numFavoritos = computed(() =>
     this.contactos().filter(c => c.favorito).length
   );
 
   filtrados = computed(() => {
     const texto = this.busqueda().toLowerCase().trim();
-    return this.contactos().filter(c =>
-      c.nombre.toLowerCase().includes(texto)
-    );
+    return this.contactos()
+      .filter(c => c.nombre.toLowerCase().includes(texto))
+      .sort((a, b) => Number(b.favorito) - Number(a.favorito));
   });
 }
