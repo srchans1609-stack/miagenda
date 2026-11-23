@@ -24,7 +24,7 @@ export class App {
   }
 
   async cargar() {
-    const res = await fetch('/contactos.json');
+    const res = await fetch('contactos.json');
     const datos: Contacto[] = await res.json();
     this.contactos.set(datos);
   }
