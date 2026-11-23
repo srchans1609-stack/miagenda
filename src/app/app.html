@@ -16,6 +16,20 @@
       aria-label="Buscar por nombre"
       (input)="busqueda.set(caja.value)">
   </div>
+
+  <div class="btn-group mb-3" role="group" aria-label="Filtrar por grupo">
+    @for (g of ['Todos', 'Clase', 'Familia', 'Trabajo']; track g) {
+      <button
+        type="button"
+        class="btn btn-sm"
+        [class.btn-dark]="grupoSeleccionado() === g"
+        [class.btn-outline-dark]="grupoSeleccionado() !== g"
+        (click)="grupoSeleccionado.set(g)">
+        {{ g }}
+      </button>
+    }
+  </div>
+
   <p class="text-muted">Mostrando {{ filtrados().length }} de {{ contactos().length }}</p>
 
   <div class="row g-3">

@@ -18,6 +18,7 @@ export interface Contacto {
 export class App {
   contactos = signal<Contacto[]>([]);
   busqueda = signal('');
+  grupoSeleccionado = signal('Todos');
 
   constructor() {
     this.cargar();
@@ -61,8 +62,13 @@ export class App {
 
   filtrados = computed(() => {
     const texto = this.busqueda().toLowerCase().trim();
+    const grupo = this.grupoSeleccionado();
     return this.contactos()
-      .filter(c => c.nombre.toLowerCase().includes(texto))
+      .filter(c => {
+        const coincideTexto = c.nombre.toLowerCase().includes(texto);
+        const coincideGrupo = grupo === 'Todos' || c.grupo === grupo;
+        return coincideTexto && coincideGrupo;
+      })
       .sort((a, b) => Number(b.favorito) - Number(a.favorito));
   });
 }
