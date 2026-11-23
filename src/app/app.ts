@@ -1,11 +1,56 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
+
+export interface Contacto {
+  id: number;
+  nombre: string;
+  telefono: string;
+  email: string;
+  grupo: string;
+  favorito: boolean;
+}
 
 @Component({
-  imports: [],
   selector: 'app-root',
-  styleUrl: './app.css',
+  standalone: true,
   templateUrl: './app.html',
+  styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('miagenda');
+  contactos = signal<Contacto[]>([]);
+  busqueda = signal('');
+
+  constructor() {
+    this.cargar();
+  }
+
+  async cargar() {
+    const res = await fetch('/contactos.json');
+    const datos: Contacto[] = await res.json();
+    this.contactos.set(datos);
+  }
+
+  iniciales(nombre: string): string {
+    return nombre
+      .split(' ')
+      .slice(0, 2)
+      .map(p => p[0]?.toUpperCase() ?? '')
+      .join('');
+  }
+
+  cambiarFavorito(id: number) {
+    this.contactos.update(lista =>
+      lista.map(c => c.id === id ? { ...c, favorito: !c.favorito } : c)
+    );
+  }
+
+  numFavoritos = computed(() =>
+    this.contactos().filter(c => c.favorito).length
+  );
+
+  filtrados = computed(() => {
+    const texto = this.busqueda().toLowerCase().trim();
+    return this.contactos().filter(c =>
+      c.nombre.toLowerCase().includes(texto)
+    );
+  });
 }

@@ -1,0 +1,5 @@
+MIAGENDA · MATERIAL DE PARTIDA (Angular básico)
+
+index.html      La maqueta. Ábrela con doble clic y activa «Ver qué pasa a Angular».
+contactos.json  Los contactos. Cópialo en la carpeta public/ de tu proyecto Angular.
+                Desde la app se pide con la dirección /contactos.json
